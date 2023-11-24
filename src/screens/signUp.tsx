@@ -7,18 +7,21 @@ import BackgroundImg from '@assets/background.png'
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 
-const navigation = useNavigation()
-
-function handleGoBack(){
-  navigation.goBack();
-}
-
 export function SignUp(){
+
+  const navigation = useNavigation()
+
+  function handleGoBack(){
+    navigation.goBack();
+  }
+
+
   return(
     <ScrollView contentContainerStyle={{ flexGrow: 1}} showsHorizontalScrollIndicator={false}>
       <VStack flex={1} px={10}>
         <Image
         source={BackgroundImg}
+        defaultSource={BackgroundImg}
         alt='imagem de fundo de pessoas treinando'
         resizeMode='contain'
         position='absolute'

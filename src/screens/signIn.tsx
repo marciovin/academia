@@ -22,7 +22,7 @@ export function SignIn(){
     <ScrollView contentContainerStyle={{ flexGrow: 1}} showsHorizontalScrollIndicator={false}>
       <VStack flex={1}  px={10}>
         <Image
-        source={BackgroundImg}
+        defaultSource={BackgroundImg}
         alt='imagem de fundo de pessoas treinando'
         resizeMode='contain'
         position='absolute'
