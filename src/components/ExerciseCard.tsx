@@ -11,7 +11,7 @@ export function ExerciseCard({... rest}: Props) {
      <TouchableOpacity>
           <HStack bg="gray.500" alignItems="center" p={2} pr={4} rounded="md" mb={3}>
                <Image 
-               source={{ uri: 'https://th.bing.com/th/id/OIP.LeX1ZkizezbDo5cGm8-KhgHaDX?rs=1&pid=ImgDetMain'}}
+               source={{ uri: 'https://th.bing.com/th/id/OIP.7MDS174h4XQwYg423jJ8mAHaFf?rs=1&pid=ImgDetMain'}}
                alt="Jean"
                w={16}
                h={16}
