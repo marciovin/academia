@@ -1,10 +1,9 @@
-import { SectionList } from 'react-native'
 import { useState } from 'react'
 
 import { ScreenHeader } from '@components/screenHeader';
 import { HistoryCard } from "@components/HistoryCard"
 
-import { Heading, VStack, Text } from 'native-base';
+import { Heading, VStack, Text, SectionList } from 'native-base';
 
 export function History(){
 const [exercises, setExercises] = useState([
@@ -35,9 +34,9 @@ const [exercises, setExercises] = useState([
           {section.title}
         </Heading>
       )}
-      
-      contentContainerStyle={[].length === 0 && { flex: 1, justifyContent: "center"}}
-      ListEmptyComponent={() => (
+       px={8}
+        contentContainerStyle={[].length === 0 && { flex: 1, justifyContent: "center"}}
+         ListEmptyComponent={() => (
         <Text color={'gray.100'} textAlign={'center'}>
           Não há exercicios registrados por aqui ☹
         </Text>
