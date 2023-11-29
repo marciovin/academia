@@ -8,7 +8,7 @@ type Props = TouchableOpacityProps & {
 
 export function ExerciseCard({... rest}: Props) {
      return (
-     <TouchableOpacity>
+     <TouchableOpacity {... rest}>
           <HStack bg="gray.500" alignItems="center" p={2} pr={4} rounded="md" mb={3}>
                <Image 
                source={{ uri: 'https://th.bing.com/th/id/OIP.7MDS174h4XQwYg423jJ8mAHaFf?rs=1&pid=ImgDetMain'}}

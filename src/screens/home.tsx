@@ -18,7 +18,8 @@ export function Home(){
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   function handleOpenExerciseDetails() {
-    navigation.navigate('execise');
+   console.log('passei') 
+   navigation.navigate('execise');
   }
 
   return(
@@ -59,7 +60,7 @@ export function Home(){
           keyExtractor={item => item}
           renderItem={({ item }) => (
             < ExerciseCard
-              onPress={handleOpenExerciseDetails}
+              onPress={() => handleOpenExerciseDetails() }
             />
           )}
           showsVerticalScrollIndicator={false}
