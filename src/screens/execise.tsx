@@ -20,6 +20,7 @@ export function Execise(){
 
   return(
     <VStack flex={1} > 
+    
     <VStack px={8} bg={'gray.600'} pt={12}>
     <TouchableOpacity onPress={handleGoBack}>
       <Icon as={Feather} name='arrow-left' color={'green.500'} size={6}/>
@@ -38,7 +39,7 @@ export function Execise(){
       </HStack>
       </HStack>
        </VStack>
-
+       <ScrollView>
       <VStack p={8}>
         <Image
         w={'full'}
@@ -72,6 +73,7 @@ export function Execise(){
     <Button title='marca como realizado'/>
     </Box>
       </VStack>
+      </ScrollView>
        </VStack>
   )
 }

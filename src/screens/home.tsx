@@ -18,8 +18,7 @@ export function Home(){
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   function handleOpenExerciseDetails() {
-   console.log('passei') 
-   navigation.navigate('execise');
+    navigation.navigate('execise');
   }
 
   return(
@@ -42,6 +41,7 @@ export function Home(){
       _contentContainerStyle={{ px: 8}}
       my={10}
       maxH={10}
+     minH={10}
       />
 
     <VStack flex={1} px={8}>
