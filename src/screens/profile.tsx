@@ -11,10 +11,13 @@ import { Center, ScrollView, VStack, Skeleton, Text, Heading } from 'native-base
 const PHOTO_SIZE = 33;
 
 export function Profile(){
-  const [photoIsLoading, setPhotoIsLoading] = useState(false)
+  const [photoIsLoading, setPhotoIsLoading] = useState(false);
+  const [userPhoto, setUserPhoto] = useState("https://github.com/marciovin.png")
 
   async function handleUserPhotoSelect() {
-      await ImagePicker.launchImageLibraryAsync({
+    
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
         aspect: [
@@ -22,8 +25,19 @@ export function Profile(){
         ],
         allowsEditing: true
       });
+      if(photoSelected.canceled) {
+        return;
+      }
+
+      setUserPhoto(photoSelected.assets[0].uri);
   }
 
+  catch (error) {
+      console.log(error)
+    }
+  }
+    
+     
   return(
     <VStack flex={1} >
       <ScreenHeader title='Perfil'/>
@@ -45,7 +59,7 @@ export function Profile(){
             :
 
         <UserPhoto 
-        source={{ uri: 'https://github.com/marciovin.png'}}
+        source={{ uri: userPhoto}}
          alt='eu Marcinho'
          size={PHOTO_SIZE}
          />
