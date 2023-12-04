@@ -3,10 +3,12 @@ import { ScreenHeader } from '@components/screenHeader';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 
-import {TouchableOpacity} from "react-native"
+import {Alert, TouchableOpacity} from "react-native"
+import { FileInfo } from "expo-file-system";
+import * as FileSystem from 'expo-file-system'
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react'
-import { Center, ScrollView, VStack, Skeleton, Text, Heading } from 'native-base';
+import { Center, ScrollView, VStack, Skeleton, Text, Heading, useToast } from 'native-base';
 
 const PHOTO_SIZE = 33;
 
@@ -14,7 +16,10 @@ export function Profile(){
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState("https://github.com/marciovin.png")
 
+  const toast = useToast()
+
   async function handleUserPhotoSelect() {
+    setPhotoIsLoading(true)
     
     try {
       const photoSelected = await ImagePicker.launchImageLibraryAsync({
@@ -29,15 +34,29 @@ export function Profile(){
         return;
       }
 
-      setUserPhoto(photoSelected.assets[0].uri);
-  }
+      if (photoSelected.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri) as FileInfo
+          
+          if(photoInfo.size && (photoInfo.size /1024 / 1024) > 5) {
+            return toast.show({
+              title: 'Escolha uma imagem com tamanho menor de até 5mb',
+              placement: 'top',
+              bgColor: 'red.500'
+            })
 
-  catch (error) {
+            }
+
+        setUserPhoto(photoSelected.assets[0].uri);
+      }
+      
+  }catch (error) {
       console.log(error)
+    }  finally {
+      setPhotoIsLoading(false)
     }
   }
-    
-     
+
+          
   return(
     <VStack flex={1} >
       <ScreenHeader title='Perfil'/>
