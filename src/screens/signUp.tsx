@@ -1,19 +1,47 @@
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 
 import LogoSvg from '@assets/logo.svg'
 import BackgroundImg from '@assets/background.png'
 
+import { useForm, Controller } from 'react-hook-form';
+
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 
+
+type FormDataProps = {
+  name: string,
+  email: string,
+  password: string,
+  password_confirm: string;
+}
+
+const signUpSchema = yup.object({
+  name: yup.string().required('Informe o nome'),
+  email: yup.string().required('Informe o e-mail').email('Email invalido'),
+  password: yup.string().required('Informe a senha').min(6, 'A senhe deve ter no minimo 6 digitos'),
+  password_confirm: yup.string().required('comfirme a senha').oneOf([yup.ref('password'), ''], 'Confirmação incorreta'),
+})
+
 export function SignUp(){
+
+  const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+    resolver: yupResolver(signUpSchema)
+  });
 
   const navigation = useNavigation()
 
   function handleGoBack(){
     navigation.goBack();
   }
+
+  function handleSignUp({name ,email, password, password_confirm}: FormDataProps) {
+    console.log({name, email, password, password_confirm})
+   }
 
 
   return(
@@ -42,21 +70,66 @@ export function SignUp(){
             Crie sua conta
           </Heading>
 
+        <Controller 
+        control={control}
+        name='name'
+          render={({ field: {onChange, value} }) => (
           <Input
-           placeholder='Qual é o seu nome?'
-          
-          />
+          placeholder='Qual é o seu nome?'
+          onChangeText={onChange}
+          value={value}
+          errormessage={errors.name?.message}
+         />
 
+        )}
+        />
+
+
+        <Controller 
+        control={control}
+        name='email'
+          render={({ field: {onChange, value} }) => (
           <Input placeholder='Coloque seu E-mail'
           keyboardType='email-address'
           autoCapitalize='none'
+          onChangeText={onChange}
+          value={value}
+          errormessage={errors.email?.message}
           />
+        )}
+        />
 
-          <Input placeholder='crie sua senha'
+        <Controller 
+        control={control}
+        name='password'
+          render={({ field: {onChange, value} }) => (
+          <Input placeholder='Crie sua senha'
           secureTextEntry
+          onChangeText={onChange}
+          value={value}
+          errormessage={errors.password?.message}
           />
+        )}
+        />
+         
+        <Controller 
+        control={control}
+        name='password_confirm'
+        render={({ field: {onChange, value} }) => (
+          <Input placeholder='Confirma sua senha'
+          secureTextEntry
+          onChangeText={onChange}
+          value={value}
+          onSubmitEditing={handleSubmit(handleSignUp)}
+          returnKeyType='send'
+          errormessage={errors.password_confirm?.message}
+          />
+        )}
+        />
 
-          <Button title='Criar e Acessar'/>
+          <Button title='Criar e Acessar'
+          onPress={handleSubmit(handleSignUp)}
+          />
 
         </Center>
 
@@ -64,7 +137,7 @@ export function SignUp(){
           <Button 
           title='Voltar para o login' 
           variant="outline"
-          mt={24}
+          mt={16}
           onPress={handleGoBack}
           />
       </VStack>
