@@ -17,8 +17,15 @@ type FormData = {
   password: string,
 }
 
+
+
 export function SignIn(){
-  const {setUser} = useAuth(); 
+  const {signIn} = useAuth(); 
+
+  function handleSignIn({ email, password}: FormData) {
+   signIn(email, password);
+  }
+
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -28,20 +35,12 @@ export function SignIn(){
     navigation.navigate("signUp")
   }
 
-  function handleSignIn({ email, password}: FormData) {
-    setUser({
-      id: '',
-      name: '',
-      email,
-      avatar: '',
-    })
-  }
-
 
   return(
     <ScrollView contentContainerStyle={{ flexGrow: 1}} showsHorizontalScrollIndicator={false}>
       <VStack flex={1}  px={10}>
         <Image
+        source={BackgroundImg}
         defaultSource={BackgroundImg}
         alt='imagem de fundo de pessoas treinando'
         resizeMode='contain'
@@ -93,7 +92,10 @@ export function SignIn(){
          )}
         />
           
-          <Button title='Acessar conta'/>
+          <Button 
+          title='Acessar conta'
+          onPress={handleSubmit(handleSignIn)}
+          />
 
         </Center>
 
