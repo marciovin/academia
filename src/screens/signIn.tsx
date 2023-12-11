@@ -1,5 +1,6 @@
 import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+import { Controller, useForm} from 'react-hook-form'
 
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
@@ -14,9 +15,13 @@ export function SignIn(){
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
+  const {control, handleSubmit, formState: { errors }} = useForm<FormData>();
+
   function handleNewAccount(){
     navigation.navigate("signUp")
   }
+
+  
 
   return(
     <ScrollView contentContainerStyle={{ flexGrow: 1}} showsHorizontalScrollIndicator={false}>
