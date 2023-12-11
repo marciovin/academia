@@ -1,6 +1,7 @@
 import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import {useAuth} from '@hooks/useAuth'
+import { useForm, Controller } from 'react-hook-form';
 
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
@@ -9,7 +10,6 @@ import BackgroundImg from '@assets/background.png'
 
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
-import { useForm } from 'react-hook-form';
 
 
 type FormData = {
@@ -63,17 +63,36 @@ export function SignIn(){
             Acesse sua conta
           </Heading>
 
+        <Controller
+        control={control}
+        name='email' 
+        rules={{required: 'Informe o e-mail'}}
+        render={({ field: { onChange } }) => (
           <Input
            placeholder='Digite seu E-mail'
           keyboardType='email-address'
+          onChangeText={onChange}
+          errormessage={errors.email?.message}
           autoCapitalize='none'
           />
+         )}
+        />
+          
 
+        <Controller
+        control={control}
+        name='password' 
+        rules={{required: 'Informe a senha'}}
+        render={({ field: {onChange} }) => (
           <Input 
           placeholder='Digite sua senha'
+          onChangeText={onChange}
+          errormessage={errors.password?.message}
           secureTextEntry
           />
-
+         )}
+        />
+          
           <Button title='Acessar conta'/>
 
         </Center>
