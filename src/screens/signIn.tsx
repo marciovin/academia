@@ -1,6 +1,6 @@
 import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { Controller, useForm} from 'react-hook-form'
+import {useAuth} from '@hooks/useAuth'
 
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
@@ -9,9 +9,16 @@ import BackgroundImg from '@assets/background.png'
 
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+import { useForm } from 'react-hook-form';
 
+
+type FormData = {
+  email: string,
+  password: string,
+}
 
 export function SignIn(){
+  const {setUser} = useAuth(); 
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -21,7 +28,15 @@ export function SignIn(){
     navigation.navigate("signUp")
   }
 
-  
+  function handleSignIn({ email, password}: FormData) {
+    setUser({
+      id: '',
+      name: '',
+      email,
+      avatar: '',
+    })
+  }
+
 
   return(
     <ScrollView contentContainerStyle={{ flexGrow: 1}} showsHorizontalScrollIndicator={false}>
@@ -48,12 +63,14 @@ export function SignIn(){
             Acesse sua conta
           </Heading>
 
-          <Input placeholder='Digite seu E-mail'
+          <Input
+           placeholder='Digite seu E-mail'
           keyboardType='email-address'
           autoCapitalize='none'
           />
 
-          <Input placeholder='Digite sua senha'
+          <Input 
+          placeholder='Digite sua senha'
           secureTextEntry
           />
 
@@ -70,7 +87,7 @@ export function SignIn(){
           title='Criar conta' 
           variant="outline"
           onPress={handleNewAccount}
-          />
+          />  
         </Center>
       </VStack>
     </ScrollView> 

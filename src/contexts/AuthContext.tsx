@@ -1,8 +1,10 @@
-import { UserDTO } from "@dtos/UserDTO";
 import { ReactNode, createContext, useState } from "react";
 
+import { UserDTO } from "@dtos/userDTO";
+
 export type AuthContextDataProps = {
-    user: UserDTO
+    user: UserDTO,
+    setUser: (user: UserDTO) => void,
 }
 
 type AuthContextProviderProps = {
@@ -21,7 +23,7 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
 
     return (
         <AuthContext.Provider value={{
-            user
+            user, setUser
           }}>
     
             {children}
