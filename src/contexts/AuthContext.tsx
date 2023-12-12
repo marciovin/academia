@@ -5,7 +5,7 @@ import { ReactNode, createContext, useState } from "react";
 
 export type AuthContextDataProps = {
     user: UserDTO
-    signIn: (email: string, password: string) => void;
+    signIn: (email: string, password: string) => Promise<void>;
 }
 
 type AuthContextProviderProps = {
@@ -32,7 +32,7 @@ throw error;
 }
 
  return (
-    <AuthContext.Provider value={{ user, signIn }}>
+    <AuthContext.Provider value={{ user, signIn}}> 
         {children}
     </AuthContext.Provider>
  )   
