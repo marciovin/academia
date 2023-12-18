@@ -1,22 +1,51 @@
-import { VStack, Text, Center, Heading, ScrollView, Icon, HStack, Image, Box } from 'native-base';
+import { VStack, Text, Center, Heading, ScrollView, Icon, HStack, Image, Box, useToast } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 
 import SeriesSvg from '@assets/series.svg';
 import RepetitionsSvg from '@assets/repetitions.svg'
 
 import { Feather } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 
 import BodySvg from '@assets/body.svg'
 import { Button } from '@components/Button';
+import { AppError } from '@utils/AppError';
+
+  type RouteParamsProps = {
+  exerciseId: string;
+} 
 
 export function Execise(){
-  const navigation = useNavigation<AppNavigatorRoutesProps>()
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+  const route = useRoute();
+
+  const toast = useToast();
+
+  const {exerciseId} = route.params as RouteParamsProps; 
+  console.log("ID =>", exerciseId)
 
   function handleGoBack(){
     navigation.goBack()
   }
+
+
+  async function fetchExerciseDetails() {
+    try {
+      
+    } catch (error){
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Não foi possivel carregar os detalhes do exercicios';
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.600'})  
+    }
+
+  }
+
 
   return(
     <VStack flex={1} > 

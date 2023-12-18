@@ -15,7 +15,7 @@ import { Execise } from '@screens/execise'
 type AppRoutes = {
   home: undefined,
   history: undefined,
-  execise: undefined,
+  execise: {execiseId: string};
   profile: undefined,
 }
 

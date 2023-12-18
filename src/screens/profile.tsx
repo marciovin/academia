@@ -2,6 +2,8 @@ import { UserPhoto } from '@components/UserPhoto';
 import { ScreenHeader } from '@components/screenHeader';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+import { useAuth } from "@hooks/useAuth";
+import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 
 import {Alert, TouchableOpacity} from "react-native"
 import { FileInfo } from "expo-file-system";
@@ -13,6 +15,8 @@ import { Center, ScrollView, VStack, Skeleton, Text, Heading, useToast } from 'n
 const PHOTO_SIZE = 33;
 
 export function Profile(){
+  const { user, signOut } = useAuth();
+
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState("https://github.com/marciovin.png")
 
@@ -78,7 +82,7 @@ export function Profile(){
             :
 
         <UserPhoto 
-        source={{ uri: userPhoto}}
+          source={user.avatar ?  { uri: user.avatar} : DefaultUserPhoto}
          alt='eu Marcinho'
          size={PHOTO_SIZE}
          />
