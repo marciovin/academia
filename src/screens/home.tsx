@@ -35,7 +35,7 @@ export function Home(){
     }catch (error) {
       const isAppError = error instanceof AppError;
 
-      const title = isAppError ? error.message : 'Não foi pssivel carregar os grupos';
+      const title = isAppError ? error.message : 'Não foi possivel carregar os grupos';
       toast.show({
         title,
         placement: 'top',
@@ -48,9 +48,11 @@ export function Home(){
 
   async function fetchExerciseByGroup() {
     try{
+
       setIsLoading(true);
       const response = await api.get(`/exercises/bygroup/${groupSelected}`); 
       setExecises(response.data);
+
 
     }catch(error){
       const isAppError = error instanceof AppError;
@@ -82,7 +84,6 @@ export function Home(){
       data={groups}
       keyExtractor={item => item}
       renderItem={({ item }) => (
-
         <Group 
         name={item}
         isActive={groupSelected === item}
@@ -128,10 +129,7 @@ export function Home(){
           _contentContainerStyle={{ paddingBottom: 20}}
         />
          </VStack>
-
-
          }
-
        </VStack>
   )
 }

@@ -1,5 +1,5 @@
 export type ExerciseDTO = {
-   id:String,
+   id: string,
     demo: string,
    group: string, 
      name: string,
