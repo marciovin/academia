@@ -11,12 +11,16 @@ import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import BodySvg from '@assets/body.svg'
 import { Button } from '@components/Button';
 import { AppError } from '@utils/AppError';
+import { api } from '@services/api';
+import { useEffect, useState } from 'react';
+import { ExerciseDTO } from '@dtos/ExerciseDTO';
 
   type RouteParamsProps = {
   exerciseId: string;
 } 
 
 export function Execise(){
+  const [exercise, setExeercise] = useState<ExerciseDTO>({} as ExerciseDTO)
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   const route = useRoute();
@@ -33,19 +37,25 @@ export function Execise(){
 
   async function fetchExerciseDetails() {
     try {
-      
+      const response = await api.get(`/exercises/${exerciseId}`);
+      setExeercise(response.data)
+
     } catch (error){
       const isAppError = error instanceof AppError;
-      const title = isAppError ? error.message : 'Não foi possivel carregar os detalhes do exercicios';
+      const title = isAppError ? error.message : 'Não foi possivel carregar os detalhes do exercicio.';
 
       toast.show({
         title,
         placement: 'top',
         bgColor: 'red.600'})  
     }
-
   }
 
+  useEffect(() => {
+    fetchExerciseDetails();
+  }, [exerciseId])
+
+  console.log(`${api.defaults.baseURL}/exercise/demo/${exercise.demo}`)
 
   return(
     <VStack flex={1} > 
@@ -54,26 +64,28 @@ export function Execise(){
     <TouchableOpacity onPress={handleGoBack}>
       <Icon as={Feather} name='arrow-left' color={'green.500'} size={6}/>
     </TouchableOpacity>
-
+{exercise.demo && (
     <HStack justifyContent={'space-between'} mt={4} mb={8} alignItems={'center'}>
       <Heading color={"gray.100"} fontSize={'lg'} flexShrink={1}>
-        Puxada frontal
+        {exercise.name}
       </Heading> 
 
       <HStack alignItems={'center'}> 
         <BodySvg />
         <Text color={'gray.200'} ml={1} textTransform={'capitalize'}>
-        costas
+        {exercise.group}
       </Text>
       </HStack>
       </HStack>
+      )}
        </VStack>
        <ScrollView>
+      
       <VStack p={8}>
         <Image
         w={'full'}
         h={80}
-        source={{ uri: "https://th.bing.com/th/id/OIP.DODI09F_rXRDiS-ejljVfAHaE8?rs=1&pid=ImgDetMain"}}
+        source={{ uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}`}}
         alt='exercicio'
         mb={3}
         resizeMode='cover'
@@ -84,6 +96,7 @@ export function Execise(){
       <HStack alignItems={'center'} justifyContent={'space-around'} mb={6} mt={5}>
     <HStack>
       <SeriesSvg />
+     
       <Text color={'gray.200'} ml={'2'}>
         3 séries
       </Text>
