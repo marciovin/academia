@@ -1,6 +1,6 @@
-import { VStack, Image, Text, Center, Heading, ScrollView, useToast} from 'native-base';
+import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import {useAuth} from '@hooks/useAuth'
+import { useAuth } from '@hooks/useAuth'
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from 'react';
 import * as yup from 'yup';
@@ -27,26 +27,26 @@ type FormData = {
 
 
 
-export function SignIn(){
-const [isLoading, setIsLoading] = useState(false)
+export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false)
 
-  const {signIn} = useAuth(); 
+  const { signIn } = useAuth();
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
   const toast = useToast();
 
 
-  async function handleSignIn({ email, password}: FormData) {
-     try {
+  async function handleSignIn({ email, password }: FormData) {
+    try {
       setIsLoading(true)
       await signIn(email, password);
 
-    } catch(error) {
+    } catch (error) {
       console.log(error)
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possível entrar';
 
-        setIsLoading(false)
+      setIsLoading(false)
 
       toast.show({
         title,
@@ -54,37 +54,37 @@ const [isLoading, setIsLoading] = useState(false)
         bgColor: 'red.500'
       })
     }
-   
+
   }
 
 
 
 
-  const {control, handleSubmit, formState: { errors }} = useForm<FormData>();
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-  function handleNewAccount(){
+  function handleNewAccount() {
     navigation.navigate("signUp")
   }
 
 
-  return(
-    <ScrollView contentContainerStyle={{ flexGrow: 1}} showsHorizontalScrollIndicator={false}>
-      <VStack flex={1}  px={10}>
+  return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsHorizontalScrollIndicator={false}>
+      <VStack flex={1} px={10}>
         <Image
-        source={BackgroundImg}
-        defaultSource={BackgroundImg}
-        alt='imagem de fundo de pessoas treinando'
-        resizeMode='contain'
-        position='absolute'
+          source={BackgroundImg}
+          defaultSource={BackgroundImg}
+          alt='imagem de fundo de pessoas treinando'
+          resizeMode='contain'
+          position='absolute'
         />
 
         <Center my={24}>
 
-          <LogoSvg/>
+          <LogoSvg />
 
-         <Text color="gray.100" fontSize="sm">
-           treine sua mente e seu corpo
-          </Text> 
+          <Text color="gray.100" fontSize="sm">
+            treine sua mente e seu corpo
+          </Text>
 
         </Center>
 
@@ -93,40 +93,40 @@ const [isLoading, setIsLoading] = useState(false)
             Acesse sua conta
           </Heading>
 
-        <Controller
-        control={control}
-        name='email' 
-        rules={{required: 'Informe o e-mail'}}
-        render={({ field: { onChange } }) => (
-          <Input
-           placeholder='Digite seu E-mail'
-          keyboardType='email-address'
-          onChangeText={onChange}
-          errormessage={errors.email?.message}
-          autoCapitalize='none'
+          <Controller
+            control={control}
+            name='email'
+            rules={{ required: 'Informe o e-mail' }}
+            render={({ field: { onChange } }) => (
+              <Input
+                placeholder='Digite seu E-mail'
+                keyboardType='email-address'
+                onChangeText={onChange}
+                errormessage={errors.email?.message}
+                autoCapitalize='none'
+              />
+            )}
           />
-         )}
-        />
-          
 
-        <Controller
-        control={control}
-        name='password' 
-        rules={{required: 'Informe a senha'}}
-        render={({ field: {onChange} }) => (
-          <Input 
-          placeholder='Digite sua senha'
-          onChangeText={onChange}
-          errormessage={errors.password?.message}
-          secureTextEntry
+
+          <Controller
+            control={control}
+            name='password'
+            rules={{ required: 'Informe a senha' }}
+            render={({ field: { onChange } }) => (
+              <Input
+                placeholder='Digite sua senha'
+                onChangeText={onChange}
+                errormessage={errors.password?.message}
+                secureTextEntry
+              />
+            )}
           />
-         )}
-        />
-          
-          <Button 
-          title='Acessar conta'
-          onPress={handleSubmit(handleSignIn)}
-          isLoading={isLoading}
+
+          <Button
+            title='Acessar conta'
+            onPress={handleSubmit(handleSignIn)}
+            isLoading={isLoading}
           />
 
         </Center>
@@ -136,13 +136,13 @@ const [isLoading, setIsLoading] = useState(false)
             Ainda não tem conta?
           </Text>
 
-          <Button 
-          title='Criar conta' 
-          variant="outline"
-          onPress={handleNewAccount}
-            />  
+          <Button
+            title='Criar conta'
+            variant="outline"
+            onPress={handleNewAccount}
+          />
         </Center>
       </VStack>
-    </ScrollView> 
+    </ScrollView>
   );
 }

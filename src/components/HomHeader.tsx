@@ -7,36 +7,39 @@ import { UserPhoto } from "./UserPhoto";
 import { TouchableOpacity } from "react-native";
 import { useAuth } from "@hooks/useAuth";
 
-export function HomeHeader(){
-const { user, signOut } = useAuth();
+export function HomeHeader() {
+    const { user, signOut } = useAuth();
 
 
-    return(
+    return (
         <HStack bg="gray.600" pt={16} pb={5} px={8} alignItems="center">
-            <UserPhoto 
-            size={16}
-            source={user.avatar ?  { uri: user.avatar} : DefaultUserPhoto}
-            alt="foto do avatar"
-            mr={4}
+            <UserPhoto
+                size={16}
+                source={user.avatar ? { uri: user.avatar } : DefaultUserPhoto}
+                alt="foto do avatar"
+                mr={4}
             />
 
             <VStack flex={1}>
-            <Text color="gray.100" fontSize="md">
-                Olá,
-            </Text>
+                <Text color="gray.100" fontSize="md">
+                    Olá,
+                </Text>
 
-            <Heading color="gray.100" fontSize="md">
-                {user.name}
-            </Heading>
+                <Heading color="gray.100" fontSize="md">
+                    {user.name}
+                </Heading>
             </VStack>
 
             <TouchableOpacity onPress={signOut}>
-            <Icon 
-            as={MaterialIcons}
-            name="logout"
-            color="red.500"
-            size={7}
-            />
+                <Icon
+                    as={MaterialIcons}
+                    name="logout"
+                    color="red.500"
+                    size={7}
+                    
+
+
+                />
             </TouchableOpacity>
         </HStack>
     )

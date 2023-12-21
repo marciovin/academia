@@ -15,15 +15,15 @@ export function Routes() {
     const theme = DefaultTheme
     theme.colors.background = colors.gray[700]
 
-    if(isLoadingUserStorageData){
+    if (isLoadingUserStorageData) {
         return <Loading />
     }
 
     return (
         <Box flex={1} bg={'gray.700'}>
-        <NavigationContainer theme={theme}>
-            {user.id ? <AppRoutes/> : <AuthRoutes/>}
-        </NavigationContainer>
+            <NavigationContainer theme={theme}>
+                {user.id ? <AppRoutes /> : <AuthRoutes />}
+            </NavigationContainer>
         </Box>
     );
 }
