@@ -60,7 +60,7 @@ const profileSchema = yup.object({
 })
 
 export function Profile() {
-  const [isUpdating, setIsUpdating] = useState<boolean>(false)
+  const [isUpdating, setIsUpdating] = useState(false)
   const [photoIsLoading, setPhotoIsLoading] = useState<boolean>(false)
   const [userPhoto, setUserPhoto] = useState<string>(
     'https://github.com/marciovin.png',
@@ -69,7 +69,6 @@ export function Profile() {
   const toast = useToast()
   const { user, updateUserProfile } = useAuth()
 
-  console.log(user)
   const {
     control,
     handleSubmit,
@@ -84,13 +83,11 @@ export function Profile() {
 
   async function handleProfileUpdate(data: FormDataProps) {
     try {
+      console.log(data)
+
       setIsUpdating(true)
 
-      const userUpdated = user
-      userUpdated.name = data.name
-
       await api.put('/users', data)
-      await updateUserProfile(userUpdated)
 
       toast.show({
         title: 'Perfil atualizado com sucesso!',
@@ -149,6 +146,7 @@ export function Profile() {
     }
   }
 
+  console.log(errors)
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
@@ -211,7 +209,7 @@ export function Profile() {
             )}
           />
         </Center>
-        <VStack px={10} mt={12} mb={9}>
+        <Center px={10} mt={12} mb={9}>
           <Heading color={'gray.200'} fontSize={'md'} mb={2}>
             Alterar senha
           </Heading>
@@ -264,7 +262,7 @@ export function Profile() {
             isLoading={isUpdating}
             mt={4}
           />
-        </VStack>
+        </Center>
       </ScrollView>
     </VStack>
   )
