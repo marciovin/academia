@@ -83,11 +83,14 @@ export function Profile() {
 
   async function handleProfileUpdate(data: FormDataProps) {
     try {
-      console.log(data)
-
       setIsUpdating(true)
 
-      await api.put('/users', data)
+      const userUpdated = user;
+      userUpdated.name = data.name;
+
+      await api.put('/users', data);
+
+      await updateUserProfile(userUpdated)
 
       toast.show({
         title: 'Perfil atualizado com sucesso!',
