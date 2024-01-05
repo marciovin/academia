@@ -31,8 +31,7 @@ export function Execise() {
   const toast = useToast();
 
   const { exerciseId } = route.params as RouteParamsProps;
-  console.log(exerciseId)
-
+  
   function handleGoBack() {
     navigation.goBack()
   }
@@ -89,9 +88,7 @@ export function Execise() {
     fetchExerciseDetails();
   }, [exerciseId])
 
-  console.log(`${api.defaults.baseURL}/exercise/demo/${exercise.demo}`)
-
-  return (
+   return (
     <VStack flex={1} >
 
       <VStack px={8} bg={'gray.600'} pt={12}>
@@ -147,7 +144,7 @@ export function Execise() {
             </HStack>
 
             <Button
-              title='marca como realizado'
+              title='Marca como realizado'
               isLoading={sendingRegister}
               onPress={handleExerciseHistoryRegister}
             />
