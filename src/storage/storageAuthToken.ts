@@ -3,27 +3,27 @@ import { AUTH_TOKEN_STORAGE } from '@storage/storadeConfig'
 
 type StorageAuthTokenProps = {
   token: string
-  refreshtoken: string
+  refresh_token: string
 }
 
 export async function storageAuthTokenSave({
   token,
-  refreshtoken,
+  refresh_token,
 }: StorageAuthTokenProps) {
   await AsyncStorage.setItem(
     AUTH_TOKEN_STORAGE,
-    JSON.stringify({ token, refreshtoken }),
+    JSON.stringify({ token, refresh_token }),
   )
 }
 
 export async function storageAuthTokenGet() {
   const response = await AsyncStorage.getItem(AUTH_TOKEN_STORAGE)
 
-  const { token, refreshtoken }: StorageAuthTokenProps = response
+  const { token, refresh_token }: StorageAuthTokenProps = response
     ? JSON.parse(response)
     : {}
 
-  return { token, refreshtoken }
+  return { token, refresh_token }
 }
 
 export async function storageAthTokenRemove() {

@@ -3,8 +3,9 @@ import { useCallback, useState } from 'react'
 import { ScreenHeader } from '@components/screenHeader';
 import { HistoryCard } from "@components/HistoryCard"
 import { Loading } from '@components/Loading';
-import { Heading, VStack, Text, SectionList, useToast, ScrollView } from 'native-base';
+import { Heading, Text, SectionList, useToast, VStack } from 'native-base';
 import { AppError } from '@utils/AppError';
+import { ScrollView } from 'react-native-virtualized-view'
 import { api } from '@services/api';
 import { useFocusEffect } from '@react-navigation/native';
 import { HistoryByDayDTO } from '@dtos/HistoryByDayDTO';
@@ -43,7 +44,6 @@ export function History() {
   return (
     <ScrollView>
       <VStack flex={1}>
-
         <ScreenHeader title='Histórico de Exercícios' />
 
         {

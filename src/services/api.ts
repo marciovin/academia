@@ -25,13 +25,14 @@ api.registerInterceptorTokenManager = (signOut) => {
     (response) => response,
     async (requestError) => {
       if (requestError?.response?.status === 401) {
+        console.log(requestError.response)
         if (
           requestError.response.data?.message === 'token.expired' ||
           requestError.response.data?.message === 'token.invalid'
         ) {
-          const { refreshtoken } = await storageAuthTokenGet()
+          const { refresh_token } = await storageAuthTokenGet()
 
-          if (!refreshtoken) {
+          if (!refresh_token) {
             signOut()
             return Promise.reject(requestError)
           }
@@ -58,8 +59,8 @@ api.registerInterceptorTokenManager = (signOut) => {
 
           return new Promise(async (resolve, reject) => {
             try {
-              const { data } = await api.post('/sessions/refresh-token', { refreshtoken })
-              await storageAuthTokenSave({ token: data.token, refreshtoken: data.refreshtoken })
+              const { data } = await api.post('/sessions/refresh-token', { refresh_token })
+              await storageAuthTokenSave({ token: data.token, refresh_token: data.refresh_token })
 
               if (originalRequestConfig.data) {
                 originalRequestConfig.data = JSON.parse(originalRequestConfig.data)
@@ -73,7 +74,7 @@ api.registerInterceptorTokenManager = (signOut) => {
               failedQueue.forEach(request => {
                 request.onSucess(data.token)
               })
-              console.log("TOKEN ATUALIZADO")
+
               resolve(api(originalRequestConfig))
 
             } catch (error: any) {
