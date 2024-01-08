@@ -84,7 +84,7 @@ export function Profile() {
 
   async function handleProfileUpdate(data: FormDataProps) {
     try {
-      setIsUpdating(true)
+      setIsUpdating(false)
 
       const userUpdated = user
       userUpdated.name = data.name

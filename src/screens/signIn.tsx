@@ -41,6 +41,7 @@ export function SignIn() {
   const toast = useToast()
 
   async function handleSignIn({ email, password }: FormData) {
+    console.log('tá chegando')
     try {
       setIsLoading(true)
       await signIn(email, password)

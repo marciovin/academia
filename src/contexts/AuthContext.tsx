@@ -29,7 +29,6 @@ export const AuthContext = createContext<AuthContextDataProps>(
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<UserDTO>({} as UserDTO)
-
   const [isLoadingUserStorageData, setIsLoadingUserStorageData] = useState(true)
 
   async function UserAndTokenUpdate(userData: UserDTO, token: string) {
@@ -41,14 +40,27 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
+  async function storageUserAndTokenSave(
+    userData: UserDTO,
+    token: string,
+    refreshtoken: string,
+  ) {
+    try {
+      setIsLoadingUserStorageData(true)
+
+      await storageUserSave(userData)
+      await storageAuthTokenSave({ token, refreshtoken })
+    } finally {
+      setIsLoadingUserStorageData(false)
+    }
+  }
+
   async function signIn(email: string, password: string) {
     try {
       const { data } = await api.post('/sessions', { email, password })
 
       if (data.user && data.token) {
-        setIsLoadingUserStorageData(true)
-        await storageUserSave(data.user)
-        await storageAuthTokenSave(data.token)
+        await storageUserAndTokenSave(data.user, data.token, data.refreshToken)
         UserAndTokenUpdate(data.user, data.token)
       }
     } finally {
@@ -77,13 +89,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   async function loadUserData() {
     try {
       const userLogged = await storageUserGet()
-      const token = await storageAuthTokenGet()
+      const { token } = await storageAuthTokenGet()
 
       if (token && userLogged) {
         UserAndTokenUpdate(userLogged, token)
       }
     } catch (error) {
-      throw error
     } finally {
       setIsLoadingUserStorageData(false)
     }
@@ -92,6 +103,14 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   useEffect(() => {
     loadUserData()
   }, [])
+
+  useEffect(() => {
+    const subscribe = api.registerInterceptorTokenManager(signOut)
+
+    return () => {
+      subscribe()
+    }
+  }, [signOut])
 
   return (
     <AuthContext.Provider
