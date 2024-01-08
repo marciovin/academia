@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { ScreenHeader } from '@components/screenHeader';
 import { HistoryCard } from "@components/HistoryCard"
-
+import { Loading } from '@components/Loading';
 import { Heading, VStack, Text, SectionList, useToast, ScrollView } from 'native-base';
 import { AppError } from '@utils/AppError';
 import { api } from '@services/api';
@@ -19,7 +19,7 @@ export function History() {
     try {
       setIsLosding(true)
 
-      const response = await api.get('/history') 
+      const response = await api.get('/history')
       setExercises(response.data)
 
     } catch (error) {
@@ -31,7 +31,7 @@ export function History() {
         placement: 'top',
         bgColor: 'red.600'
       })
-    }finally {
+    } finally {
       setIsLosding(false)
     }
   }
@@ -42,32 +42,34 @@ export function History() {
 
   return (
     <ScrollView>
-    <VStack flex={1}>
-      <ScreenHeader title='Histórico de Exercícios' />
+      <VStack flex={1}>
+        <ScreenHeader title='Histórico de Exercícios' />
 
-      <SectionList
+        {
+          isLoading ? <Loading /> :
+            <SectionList
 
-        sections={exercises}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <HistoryCard data={item}/>
-        )}
+              sections={exercises}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <HistoryCard data={item} />
+              )}
 
-        renderSectionHeader={({ section }) => ( 
-          <Heading color={'gray.200'} fontSize={'md'} mt={10} mb={3}>
-            {section.title}
-          </Heading>
-        )}
-        px={8}
-        contentContainerStyle={[].length === 0 && { flex: 1, justifyContent: "center" }}
-        ListEmptyComponent={() => (
-          <Text color={'gray.100'} textAlign={'center'}>
-            Não há exercicios registrados por aqui ☹
-          </Text>
-        )}
-      />
+              renderSectionHeader={({ section }) => (
+                <Heading color={'gray.200'} fontSize={'md'} mt={10} mb={3}>
+                  {section.title}
+                </Heading>
+              )}
+              px={8}
+              contentContainerStyle={[].length === 0 && { flex: 1, justifyContent: "center" }}
+              ListEmptyComponent={() => (
+                <Text color={'gray.100'} textAlign={'center'}>
+                  Não há exercicios registrados por aqui ☹
+                </Text>
+              )}
+            />}
 
-    </VStack>
+      </VStack>
     </ScrollView>
   );
 }

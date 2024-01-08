@@ -1,4 +1,4 @@
-import { storageAuthTokenGet } from '@storage/storageAuthToken'
+import { storageAuthTokenGet, storageAuthTokenSave } from '@storage/storageAuthToken'
 import { AppError } from '@utils/AppError'
 import axios, { AxiosError, AxiosInstance } from 'axios'
 
@@ -17,7 +17,7 @@ const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
 }) as APIInstance
 
-const failedQueue: Array<PromiseType> = []
+let failedQueue: Array<PromiseType> = []
 let isRefreshing = false
 
 api.registerInterceptorTokenManager = (signOut) => {
@@ -55,6 +55,38 @@ api.registerInterceptorTokenManager = (signOut) => {
           }
 
           isRefreshing = true
+
+          return new Promise(async (resolve, reject) => {
+            try {
+              const { data } = await api.post('/sessions/refresh-token', { refreshtoken })
+              await storageAuthTokenSave({ token: data.token, refreshtoken: data.refreshtoken })
+
+              if (originalRequestConfig.data) {
+                originalRequestConfig.data = JSON.parse(originalRequestConfig.data)
+              }
+
+              originalRequestConfig.headers = {
+                Authorization: `Bearer ${data.token}`,
+              }
+              api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+
+              failedQueue.forEach(request => {
+                request.onSucess(data.token)
+              })
+              console.log("TOKEN ATUALIZADO")
+              resolve(api(originalRequestConfig))
+
+            } catch (error: any) {
+              failedQueue.forEach(request => {
+                request.onFalied(error);
+              });
+              signOut();
+              reject(error)
+            } finally {
+              isRefreshing = false;
+              failedQueue = []
+            }
+          })
         }
         signOut()
       }
