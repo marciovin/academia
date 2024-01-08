@@ -43,6 +43,7 @@ export function History() {
   return (
     <ScrollView>
       <VStack flex={1}>
+
         <ScreenHeader title='Histórico de Exercícios' />
 
         {
@@ -68,7 +69,6 @@ export function History() {
                 </Text>
               )}
             />}
-
       </VStack>
     </ScrollView>
   );
